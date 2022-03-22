@@ -4,7 +4,7 @@
              cmplsp cmp_nvim_lsp
              core aniseed.core}})
 
-(defn define-signs
+(defn- define-signs
   [prefix]
   (let [error (.. prefix "SignError")
         warn  (.. prefix "SignWarn")
@@ -34,19 +34,14 @@
 
 (def- capabilities (cmplsp.update_capabilities (vim.lsp.protocol.make_client_capabilities)))
 
-(defn on-attach [client bufnr] 
+(defn- on-attach [client bufnr] 
   (let [opts {:noremap true :silent true }]
     (nvim.buf_set_keymap bufnr :n :gd "<Cmd>lua vim.lsp.buf.definition()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :K "<Cmd>lua vim.lsp.buf.hover()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :=G "<cmd>lua vim.lsp.buf.formatting()<CR>" {:noremap true})))
 
-;(def servers ["clojure_lsp"])
-;
-;(each [_ server (pairs servers)]
-   ;  (core.println server)
-   ;  (core.println lspconfig.server.setup)
-   ;  (lspconfig.server.setup {:on-attach on-attach}))
-
-(let [opts {:on_attach on-attach :handlers handlers :capabilities capabilities}]
-  (lsp.clojure_lsp.setup opts )
-  (lsp.tsserver.setup opts))
+(defn configure [servers]
+  (each [_ server (pairs servers)]
+    (let [opts {:on_attach on-attach :handlers handlers :capabilities capabilities}
+          server-setup-fn (-> lsp (. server) (. "setup"))]
+      (server-setup-fn opts))))

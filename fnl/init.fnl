@@ -32,9 +32,7 @@
                     ;lsp server
                     :neovim/nvim-lspconfig {:mod :lspconfig}
                     :hrsh7th/nvim-cmp {:mod :nvim-cmp}
-                    :ray-x/lsp_signature.nvim {:mod :lspsignature}
-                    :nvim-treesitter/nvim-treesitter {:mod :treesitter}
-                    })
+                    :nvim-treesitter/nvim-treesitter {:mod :treesitter}})
 
 ; configure keymappings
 (set nvim.g.maplocalleader ",")

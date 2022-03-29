@@ -1,14 +1,13 @@
 (module init
   {autoload {core aniseed.core 
-             nvim aniseed.nvim
-             config config
+             nvim aniseed.nvim config config
              plugins plugins
-             lsp plugins.lspconfig}})
+             theme plugins.theme
+             lsp plugins.lspconfig}
+   require {mappings mappings}})
 
-; configure nvim global options
-(config.set-general-options {:completeopt "menuone,noselect" 
-                             :ignorecase true 
-                             :smartcase true 
+;configure nvim global options
+(config.set-general-options {:completeopt "menuone,noselect" :ignorecase true :smartcase true 
                              :clipboard "unnamedplus"
                              :hidden true 
                              :number true 
@@ -26,6 +25,9 @@
                     :Olical/fennel  {:mod :fennel}                   
                     :Olical/conjure {:mod :conjure}                   
 
+                    ; file tree
+                    :preservim/nerdtree {:mod :nerdtree}
+
                     ; fuzzy finder
                     :nvim-lua/plenary.nvim {:mod :plenary}
                     :nvim-telescope/telescope.nvim  {:mod :telescope}
@@ -33,19 +35,20 @@
                     ; theme
                     :morhetz/gruvbox {:mod :gruvbox}
 
+                    ; paredit-ish
+                    :guns/vim-sexp {:mod :sexp}
+
+                    ; autocomplete
+                    ;:Shougo/deoplete.nvim  {:mod :deoplete :config {"do" ":UpdateRemotePlugins"}}
+                    ;:tbodt/deoplete-tabnine {:mod :tabnine :config {"do" "./install.sh"}}
+
                     ;lsp server
                     :neovim/nvim-lspconfig {:mod :lspconfig}
-                    :hrsh7th/nvim-cmp {:mod :nvim-cmp}
+                    :hrsh7th/nvim-cmp {:mod :cmp}
                     :nvim-treesitter/nvim-treesitter {:mod :treesitter}})
 
-; configure language servers
-(lsp.configure ["clojure_lsp" "tsserver"])
-
-; configure keymappings
-(set nvim.g.maplocalleader ",")
-(nvim.set_keymap :n :<c-n>":bn<cr>" {:noremap true})
-(nvim.set_keymap :n :<c-d>":bd!<cr>" {:noremap true})
-
 ; theme
-(set nvim.o.background :dark)
-(nvim.command "colorscheme gruvbox")
+(theme.configure {:background :dark :colorscheme :gruvbox})
+
+; configure language servers
+(lsp.configure ["clojure_lsp" "tsserver" "bashls" "dockerls"])

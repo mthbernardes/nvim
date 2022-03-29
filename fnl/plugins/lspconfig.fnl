@@ -24,7 +24,7 @@
                                                     {:severity_sort true
                                                      :update_in_insert false
                                                      :underline true
-                                                     :virtual_text false})
+                                                     :virtual_text false}) 
                 "textDocument/hover" (vim.lsp.with
                                        vim.lsp.handlers.hover
                                        {:border "single"})
@@ -38,7 +38,9 @@
   (let [opts {:noremap true :silent true }]
     (nvim.buf_set_keymap bufnr :n :gd "<Cmd>lua vim.lsp.buf.definition()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :K "<Cmd>lua vim.lsp.buf.hover()<CR>" {:noremap true})
-    (nvim.buf_set_keymap bufnr :n :=G "<cmd>lua vim.lsp.buf.formatting()<CR>" {:noremap true})))
+    (nvim.buf_set_keymap bufnr :n :ff "<Cmd>lua vim.diagnostic.open_float()<CR>" {:noremap true})
+    (nvim.buf_set_keymap bufnr :n :F "<Cmd>lua vim.lsp.buf.code_action()<CR>" {:noremap true})
+    (nvim.buf_set_keymap bufnr :n :=G "<Cmd>lua vim.lsp.buf.formatting()<CR>" {:noremap true})))
 
 (defn configure [servers]
   (each [_ server (pairs servers)]

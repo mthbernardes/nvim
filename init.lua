@@ -26,3 +26,4 @@ vim.g["aniseed#env"] = {
   module = "nvim.init",
   compile = true
 }
+vim.g["deoplete#enable_at_startup"] = true

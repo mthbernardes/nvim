@@ -23,6 +23,7 @@
 ; configure nvim plugins
 (plugins.configure {; plugin manager
                     :wbthomason/packer.nvim {}
+
                     ; basic setup to use fennel
                     :Olical/aniseed {:branch :develop}
                     :Olical/fennel  {:mod :fennel}                   
@@ -43,8 +44,8 @@
                     :guns/vim-sexp {:mod :sexp}
 
                     ; autocomplete
-                    ;:Shougo/deoplete.nvim  {:mod :deoplete :config {"do" ":UpdateRemotePlugins"}}
-                    ;:tbodt/deoplete-tabnine {:mod :tabnine :config {"do" "./install.sh"}}
+                    :Shougo/deoplete.nvim  {:mod :deoplete :run ":UpdateRemotePlugins"}
+                    :tbodt/deoplete-tabnine {:mod :tabnine :run "./install.sh"}
 
                     ;lsp server
                     :neovim/nvim-lspconfig {:mod :lspconfig}
@@ -57,4 +58,3 @@
 
 ; configure language servers
 (lsp.configure ["clojure_lsp" "tsserver" "bashls" "dockerls"])
-

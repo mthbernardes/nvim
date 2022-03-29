@@ -23,7 +23,6 @@
 ; configure nvim plugins
 (plugins.configure {; plugin manager
                     :wbthomason/packer.nvim {}
-
                     ; basic setup to use fennel
                     :Olical/aniseed {:branch :develop}
                     :Olical/fennel  {:mod :fennel}                   
@@ -37,6 +36,9 @@
                                                                :nvim-lua/plenary.nvim]
                                                     :mod :telescope}
 
+                    ; git
+                    :tpope/vim-fugitive {:mod :vim-fugitive}
+
                     ; theme
                     :morhetz/gruvbox {:mod :gruvbox}
 
@@ -49,6 +51,7 @@
 
                     ;lsp server
                     :neovim/nvim-lspconfig {:mod :lspconfig}
+                    :williamboman/nvim-lsp-installer {:mod :nvim-lsp-installer}
                     :hrsh7th/cmp-nvim-lsp {:mod :cmp-nvim-lsp}
                     :hrsh7th/nvim-cmp {:mod :cmp}
                     :nvim-treesitter/nvim-treesitter {:mod :treesitter}})
@@ -57,4 +60,4 @@
 (theme.configure {:background :dark :colorscheme :gruvbox})
 
 ; configure language servers
-(lsp.configure ["clojure_lsp" "tsserver" "bashls" "dockerls"])
+(lsp.configure ["clojure_lsp" "tsserver" "bashls" "dockerls" "ltex"])

@@ -1,4 +1,4 @@
-(module plugins.treesitter
+(module nvim.plugins.treesitter
   {autoload {treesitter nvim-treesitter.configs}})
 
 (treesitter.setup {:highlight {:enable true}

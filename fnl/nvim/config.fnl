@@ -1,4 +1,4 @@
-(module config
+(module nvim.config
   {autoload {nvim aniseed.nvim
              core aniseed.core}})
 

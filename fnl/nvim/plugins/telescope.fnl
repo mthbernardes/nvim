@@ -1,6 +1,6 @@
-(module plugins.telescope
-  {autoload {telescope telescope
-             nvim aniseed.nvim}})
+(module nvim.plugins.telescope
+  {autoload {nvim aniseed.nvim}
+   require {telescope telescope}})
 
 (telescope.setup {:defaults {:file_ignore_patterns ["node_modules"]}
                   :pickers {:find_files {:find_command ["rg" "--files" "--iglob" "!.git" "--hidden"]}}})

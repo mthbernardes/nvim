@@ -1,4 +1,4 @@
-(module mappings
+(module nvim.mappings
   {autoload {nvim aniseed.nvim}})
 
 ; configure keymappings
@@ -11,4 +11,3 @@
 (nvim.set_keymap :n :<c-k> "<c-w>k" {:noremap true})
 
 (nvim.set_keymap :n :<c-d> ":bd!<cr>" {:noremap true})
-(nvim.set_keymap :n :<leader>t ":NERDTreeToggleVCS<cr>" {:noremap true})

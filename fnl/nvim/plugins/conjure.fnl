@@ -1,4 +1,4 @@
-(module plugins.conjure
+(module nvim.plugins.conjure
   {autoload {nvim aniseed.nvim}})
 
 (set nvim.g.conjure#mapping#doc_word "K")

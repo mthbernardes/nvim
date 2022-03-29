@@ -1,4 +1,4 @@
-(module plugins.sexp
+(module nvim.plugins.sexp
   {autoload {core aniseed.core
              sexp sexp
              nvim aniseed.nvim}})

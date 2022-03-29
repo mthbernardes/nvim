@@ -1,4 +1,4 @@
-(module plugins.lspconfig
+(module nvim.plugins.lspconfig
   {autoload {nvim aniseed.nvim
              lsp lspconfig
              cmplsp cmp_nvim_lsp

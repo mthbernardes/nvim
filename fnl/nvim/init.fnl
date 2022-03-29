@@ -1,10 +1,11 @@
-(module init
+(module nvim.init
   {autoload {core aniseed.core 
-             nvim aniseed.nvim config config
-             plugins plugins
-             theme plugins.theme
-             lsp plugins.lspconfig}
-   require {mappings mappings}})
+             nvim aniseed.nvim 
+             config nvim.config 
+             lsp nvim.plugins.lspconfig
+             plugins nvim.plugins
+             theme nvim.plugins.theme}
+   require {mappings nvim.mappings}})
 
 ;configure nvim global options
 (config.set-general-options {:completeopt "menuone,noselect" :ignorecase true :smartcase true 
@@ -20,17 +21,20 @@
                              :modifiable true})
 
 ; configure nvim plugins
-(plugins.configure {; basic setup to use fennel
-                    :Olical/aniseed {:mod :aniseed}
+(plugins.configure {; plugin manager
+                    :wbthomason/packer.nvim {}
+                    ; basic setup to use fennel
+                    :Olical/aniseed {:branch :develop}
                     :Olical/fennel  {:mod :fennel}                   
-                    :Olical/conjure {:mod :conjure}                   
+                    :Olical/conjure {:branch :master :mod :conjure}
 
                     ; file tree
                     :preservim/nerdtree {:mod :nerdtree}
 
                     ; fuzzy finder
-                    :nvim-lua/plenary.nvim {:mod :plenary}
-                    :nvim-telescope/telescope.nvim  {:mod :telescope}
+                    :nvim-telescope/telescope.nvim {:requires [:nvim-lua/popup.nvim
+                                                               :nvim-lua/plenary.nvim]
+                                                    :mod :telescope}
 
                     ; theme
                     :morhetz/gruvbox {:mod :gruvbox}
@@ -44,6 +48,7 @@
 
                     ;lsp server
                     :neovim/nvim-lspconfig {:mod :lspconfig}
+                    :hrsh7th/cmp-nvim-lsp {:mod :cmp-nvim-lsp}
                     :hrsh7th/nvim-cmp {:mod :cmp}
                     :nvim-treesitter/nvim-treesitter {:mod :treesitter}})
 
@@ -52,3 +57,4 @@
 
 ; configure language servers
 (lsp.configure ["clojure_lsp" "tsserver" "bashls" "dockerls"])
+

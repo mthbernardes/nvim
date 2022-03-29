@@ -1,4 +1,4 @@
-(module plugins.theme
+(module nvim.plugins.theme
   {autoload {nvim aniseed.nvim
              core aniseed.core}})
 

@@ -8,14 +8,19 @@
    require {mappings nvim.mappings}})
 
 ;configure nvim global options
-(config.set-general-options {:completeopt "menuone,noselect" :ignorecase true :smartcase true 
+(config.set-general-options {:completeopt "menuone,noselect" 
+														 :ignorecase true 
+														 :smartcase true 
                              :clipboard "unnamedplus"
                              :hidden true 
                              :number true 
                              :inccommand "split" 
-                             :tabstop 2 
-                             :shiftwidth 2 
                              :expandtab true
+                             :shiftwidth 2 
+                             :softtabstop 2
+                             :ts 2
+                             :sw 2
+                             :sts 0
                              :undofile true 
                              :wmw 0 
                              :modifiable true})
@@ -38,12 +43,19 @@
 
                     ; git
                     :tpope/vim-fugitive {:mod :vim-fugitive}
+                    :airblade/vim-gitgutter {:mod :gitgutter}
 
                     ; theme
                     :morhetz/gruvbox {:mod :gruvbox}
 
                     ; paredit-ish
                     :guns/vim-sexp {:mod :sexp}
+
+                    ; rego
+                    :tsandall/vim-rego {:mod :rego}
+
+                    ;autoformat
+                    :vim-autoformat/vim-autoformat {:mod :autoformat}
 
                     ; autocomplete
                     :Shougo/deoplete.nvim  {:mod :deoplete :run ":UpdateRemotePlugins"}
@@ -60,4 +72,4 @@
 (theme.configure {:background :dark :colorscheme :gruvbox})
 
 ; configure language servers
-(lsp.configure ["clojure_lsp" "tsserver" "bashls" "dockerls" "ltex"])
+(lsp.configure ["clojure_lsp" "tsserver" "bashls" "dockerls" "ltex" "pylsp" "html"])

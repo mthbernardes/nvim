@@ -30,5 +30,4 @@
   (load-plugin-config :telescope)
   (plugin-config-exists? :telescope)
   (configure {:nvim-telescope/telescope.nvim {:mod :telescope}})
-  (configure {:Shougo/deoplete.nvim {:mod :deoplete :config {"do" ":UpdateRemotePlugins"}}})
-  )
+  (configure {:Shougo/deoplete.nvim {:mod :deoplete :config {"do" ":UpdateRemotePlugins"}}}))

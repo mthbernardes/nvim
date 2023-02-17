@@ -19,28 +19,28 @@
   (define-signs "Diagnostic")
   (define-signs "LspDiagnostics"))
 
-(def- handlers {"textDocument/publishDiagnostics" (vim.lsp.with
-                                                    vim.lsp.diagnostic.on_publish_diagnostics
-                                                    {:severity_sort true
-                                                     :update_in_insert false
-                                                     :underline true
-                                                     :virtual_text false}) 
-                "textDocument/hover" (vim.lsp.with
-                                       vim.lsp.handlers.hover
-                                       {:border "single"})
-                "textDocument/signatureHelp" (vim.lsp.with
-                                               vim.lsp.handlers.signature_help
-                                               {:border "single"})})
+(def- handlers 
+  {"textDocument/publishDiagnostics" (vim.lsp.with
+                                       vim.lsp.diagnostic.on_publish_diagnostics
+                                       {:severity_sort true
+                                        :update_in_insert false
+                                        :underline true
+                                        :virtual_text false})
+   "textDocument/hover" (vim.lsp.with vim.lsp.handlers.hover {:border "single"})
+   "textDocument/signatureHelp" (vim.lsp.with vim.lsp.handlers.signature_help {:border "single"})})
 
-(def- capabilities (cmplsp.update_capabilities (vim.lsp.protocol.make_client_capabilities)))
+(def- capabilities (cmplsp.default_capabilities (vim.lsp.protocol.make_client_capabilities)))
 
 (defn- on-attach [client bufnr] 
   (let [opts {:noremap true :silent true }]
-    (nvim.buf_set_keymap bufnr :n :gd "<Cmd>lua vim.lsp.buf.definition()<CR>" {:noremap true})
+    (nvim.buf_set_keymap bufnr :n :<leader>gd "<Cmd>lua vim.lsp.buf.definition()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :K "<Cmd>lua vim.lsp.buf.hover()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :ff "<Cmd>lua vim.diagnostic.open_float()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :F "<Cmd>lua vim.lsp.buf.code_action()<CR>" {:noremap true})
-    (nvim.buf_set_keymap bufnr :n :=G "<Cmd>lua vim.lsp.buf.formatting()<CR>" {:noremap true})))
+    (nvim.buf_set_keymap bufnr :n :<leader>=G "<Cmd>lua vim.lsp.buf.formatting()<CR>" {:noremap true})
+    (nvim.buf_set_keymap bufnr :n :<leader>lf "<cmd>lua vim.lsp.buf.formatting()<CR>" {:noremap true})
+    (nvim.buf_set_keymap bufnr :n :<leader>lr ":lua require('telescope.builtin').lsp_references()<cr>" {:noremap true})
+    (nvim.buf_set_keymap bufnr :n :<leader>ln "<cmd>lua vim.lsp.buf.rename()<CR>" {:noremap true})))
 
 (defn configure [servers]
   (each [_ server (pairs servers)]

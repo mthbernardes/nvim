@@ -2,6 +2,7 @@
   {autoload {nvim aniseed.nvim}})
 
 ; configure keymappings
+(set nvim.g.mapleader ",")
 (set nvim.g.maplocalleader ",")
 
 ; navigate on splits

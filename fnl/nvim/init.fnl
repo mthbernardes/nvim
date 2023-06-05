@@ -52,15 +52,8 @@
                     :leafgarland/typescript-vim {:mod :typescript-vim}
                     :peitalin/vim-jsx-typescript {:mod :vim-jsx-typescript}
 
-                    ; git
-                    :tpope/vim-fugitive {:mod :vim-fugitive}
-                    :airblade/vim-gitgutter {:mod :gitgutter}
-
                     ; theme
                     :morhetz/gruvbox {:mod :gruvbox}
-
-                    ; support nim
-                    :zah/nim.vim {:mod :nim}
 
                     ; paredit-ish
                     :guns/vim-sexp {:mod :sexp}
@@ -68,19 +61,20 @@
                     :tpope/vim-repeat {}
                     :tpope/vim-surround {}
 
-                    ; phpactor
-                    ;:phpactor/phpactor
                     ; auto-save
                     :907th/vim-auto-save {:mod :autosave}
+
                     ; rego
                     :tsandall/vim-rego {:mod :rego}
 
-                    ;autoformat
+                    ; autoformat
                     :vim-autoformat/vim-autoformat {:mod :autoformat}
 
+                    ; gpt
+                    :mthbernardes/codeexplain.nvim {:mod :codeexplain :run ":UpdateRemotePlugins"}
+
                     ; autocomplete
-                    :Shougo/deoplete.nvim  {:mod :deoplete :run ":UpdateRemotePlugins"}
-                    :tbodt/deoplete-tabnine {:mod :tabnine :run "./install.sh"}})
+                    :Shougo/deoplete.nvim  {:mod :deoplete :run ":UpdateRemotePlugins"}})
 
 ; theme
 (theme.configure {:background :dark :colorscheme :gruvbox})

@@ -34,6 +34,7 @@
 (defn- on-attach [client bufnr] 
   (let [opts {:noremap true :silent true }]
     (nvim.buf_set_keymap bufnr :n :<leader>gd "<Cmd>lua vim.lsp.buf.definition()<CR>" {:noremap true})
+    (nvim.buf_set_keymap bufnr :n :<leader>fu "<Cmd>lua vim.lsp.buf.references()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :K "<Cmd>lua vim.lsp.buf.hover()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :ff "<Cmd>lua vim.diagnostic.open_float()<CR>" {:noremap true})
     (nvim.buf_set_keymap bufnr :n :F "<Cmd>lua vim.lsp.buf.code_action()<CR>" {:noremap true})

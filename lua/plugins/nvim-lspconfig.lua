@@ -75,8 +75,7 @@ return {
 
     local servers = {
 
-      gleam = {},
-
+      rust_analyzer = {},
       lua_ls = {
         settings = {
           Lua = {
@@ -93,20 +92,21 @@ return {
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua',
-      'gleam',
     })
 
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+    local handlers = {
+      function(server_name) -- default handler (optional)
+        local server = servers[server_name] or {}
+        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        local lspconfig = require 'lspconfig'
+        lspconfig[server_name].setup(server)
+      end,
+    }
+
     require('mason-lspconfig').setup {
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          print(server)
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
-        end,
-      },
+      handlers = handlers,
     }
   end,
 }

@@ -10,6 +10,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI', 'TextChangedP' }, {
+  desc = 'Auto save on change',
+  group = vim.api.nvim_create_augroup('kickstart-auto-save', { clear = true }),
+  callback = function()
+    if vim.bo.buftype == '' then
+      vim.cmd 'write'
+    end
+  end,
+})
+
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 
 if not vim.loop.fs_stat(lazypath) then
@@ -19,7 +29,6 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  -- require 'plugins.auto-save',
   require 'plugins.nvim-web-devicons',
   require 'plugins.openingh',
   require 'plugins.gitsigns',
@@ -28,7 +37,7 @@ require('lazy').setup({
   require 'plugins.telescope',
   require 'plugins.nvim-lspconfig',
   require 'plugins.nvim-cmp',
-  require 'plugins.conform',
+  --require 'plugins.conform',
   require 'plugins.tokyonight',
   require 'plugins.todo-comments',
   require 'plugins.mini',

@@ -32,7 +32,7 @@ require('lazy').setup({
   require 'plugins.nvim-web-devicons',
   require 'plugins.openingh',
   require 'plugins.gitsigns',
-  require 'plugins.neotest',
+  require 'plugins.vim-test',
   require 'plugins.nvim-tree',
   require 'plugins.telescope',
   require 'plugins.nvim-lspconfig',

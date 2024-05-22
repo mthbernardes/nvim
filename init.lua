@@ -22,6 +22,12 @@ vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI', 'TextChangedP' }, {
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 
+--vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+--  callback = function()
+--    require("lint").try_lint()
+--  end,
+--})
+
 if not vim.loop.fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
   vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
@@ -29,6 +35,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
+  'mfussenegger/nvim-lint',
   require 'plugins.nvim-web-devicons',
   require 'plugins.openingh',
   require 'plugins.gitsigns',

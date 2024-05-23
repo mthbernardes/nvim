@@ -57,7 +57,7 @@ return {
 	if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
 	  map('<leader>h', function()
 	    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-	  end, '[T]oggle Inlay [H]ints')
+	    end, '[T]oggle Inlay [H]ints')
 	end
       end,
     })
@@ -74,6 +74,15 @@ return {
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     local servers = {
+      yamlls = {
+	settings = {
+	  yaml = {
+	    schemas = {
+	      ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+	    }
+	  }
+	}
+      },
 
       ltex = {
 	settings = {

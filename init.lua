@@ -35,7 +35,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  'mfussenegger/nvim-lint',
+  require 'plugins.nvim-lint',
   require 'plugins.nvim-web-devicons',
   require 'plugins.openingh',
   require 'plugins.gitsigns',

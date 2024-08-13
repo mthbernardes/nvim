@@ -6,7 +6,7 @@
      {
        "<leader>f",
        function()
-	 require("conform").format({ async = true, lsp_fallback = false })
+	 require("conform").format({ async = true, lsp_fallback = true})
        end,
        mode = "n",
        desc = "[F]ormat buffer",

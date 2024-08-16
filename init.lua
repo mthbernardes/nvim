@@ -44,11 +44,14 @@ require('lazy').setup({
   require 'plugins.telescope',
   require 'plugins.nvim-lspconfig',
   require 'plugins.nvim-cmp',
+  require 'plugins.lsp-signature',
   --require 'plugins.conform',
   require 'plugins.tokyonight',
   require 'plugins.todo-comments',
   require 'plugins.mini',
   require 'plugins.nvim-treesitter',
+  require 'plugins.lualine',
+
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {

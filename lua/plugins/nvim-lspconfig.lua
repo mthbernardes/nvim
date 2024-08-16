@@ -19,6 +19,12 @@ return {
 	end
 
 	map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+	map('gdv', function()
+	  -- Use Telescope to get LSP definitions
+	  require('telescope.builtin').lsp_definitions{
+	    jump_type = 'vsplit',  -- Open in vertical split
+	  }
+	end, '[G]oto [D]efinition in vertical split')
 
 	map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
@@ -57,7 +63,7 @@ return {
 	if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
 	  map('<leader>h', function()
 	    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-	    end, '[T]oggle Inlay [H]ints')
+	  end, '[T]oggle Inlay [H]ints')
 	end
       end,
     })
@@ -98,7 +104,6 @@ return {
 	  },
 	},
       },
-      rust_analyzer = {},
       lua_ls = {
 	settings = {
 	  Lua = {
@@ -121,15 +126,18 @@ return {
 
     local lspconfig = require 'lspconfig'
 
+
     local handlers = {
       function(server_name) -- default handler (optional)
 	local server = servers[server_name] or {}
+	--server.on_attach = function(client, bufnr)
+	--  navic.attach(client, bufnr)
+	--end
+
 	server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
 	lspconfig[server_name].setup(server)
       end,
     }
-
-    lspconfig['gleam'].setup({})
 
     require('mason-lspconfig').setup {
       handlers = handlers,

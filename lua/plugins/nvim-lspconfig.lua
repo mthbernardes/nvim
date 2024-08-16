@@ -5,6 +5,7 @@ return {
     { 'williamboman/mason.nvim', config = true },
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
+    'artemave/workspace-diagnostics.nvim',
 
     { 'j-hui/fidget.nvim', opts = {} },
 
@@ -130,9 +131,11 @@ return {
     local handlers = {
       function(server_name) -- default handler (optional)
 	local server = servers[server_name] or {}
-	--server.on_attach = function(client, bufnr)
-	--  navic.attach(client, bufnr)
-	--end
+	server.on_attach = function(client, bufnr)
+	  vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.setqflist()<CR>', { noremap = true, silent = true })
+	  local worskapce_client = require("workspace-diagnostics")
+	  worskapce_client.populate_workspace_diagnostics(client, bufnr)
+	end
 
 	server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
 	lspconfig[server_name].setup(server)

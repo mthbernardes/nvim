@@ -18,12 +18,12 @@ return {
       close_on_exit = true,
       shell = vim.o.shell, -- Use the default shell
       float_opts = {
-        border = "rounded",
-        winblend = 0,
-        highlights = {
-          border = "Normal",
-          background = "Normal",
-        },
+	border = "rounded",
+	winblend = 0,
+	highlights = {
+	  border = "Normal",
+	  background = "Normal",
+	},
       },
     })
 

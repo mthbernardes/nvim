@@ -43,6 +43,7 @@ require('lazy').setup({
   require 'plugins.nvim-tree',
   require 'plugins.telescope',
   require 'plugins.nvim-lspconfig',
+  require 'plugins.lspkind',
   require 'plugins.nvim-cmp',
   require 'plugins.lsp-signature',
   require 'plugins.git-conflict',
@@ -51,6 +52,9 @@ require('lazy').setup({
   require 'plugins.mini',
   require 'plugins.nvim-treesitter',
   require 'plugins.lualine',
+  require 'plugins.ts-error-translator',
+  require 'plugins.neotest',
+  require 'plugins.toggleterm'
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {

@@ -139,7 +139,7 @@ return {
       function(server_name) -- default handler (optional)
         local server = servers[server_name] or {}
         server.on_attach = function(client, bufnr)
-          vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.setqflist()<CR>', { noremap = true, silent = true })
+	  vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float(nil, { scope = "cursor", focusable = false, border = "rounded" })<CR>', { noremap = true, silent = true })
         end
 
         server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})

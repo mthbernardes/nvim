@@ -15,65 +15,73 @@ return {
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
       callback = function(event)
-	local map = function(keys, func, desc)
-	  vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-	end
+        local map = function(keys, func, desc)
+          vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+        end
 
-	map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-	map('gdv', function()
-	  -- Use Telescope to get LSP definitions
-	  require('telescope.builtin').lsp_definitions{
-	    jump_type = 'vsplit',  -- Open in vertical split
-	  }
-	end, '[G]oto [D]efinition in vertical split')
+        map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+        map('gdv', function()
+          require('telescope.builtin').lsp_definitions {
+            jump_type = 'vsplit', -- Open in vertical split
+          }
+        end, '[G]oto [D]efinition in vertical split')
 
-	map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+        map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
-	map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+        map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
 
-	map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+        map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
 
-	map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+        map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 
-	map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+        map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
-	map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+        map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 
-	map('ff', vim.lsp.buf.code_action, '[C]ode [A]ction')
+        map('ff', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-	map('K', vim.lsp.buf.hover, 'Hover Documentation')
+        map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
-	map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+        map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-	local client = vim.lsp.get_client_by_id(event.data.client_id)
-	if client and client.server_capabilities.documentHighlightProvider then
-	  local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = true })
-	  vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-	    buffer = event.buf,
-	    group = highlight_augroup,
-	    callback = vim.lsp.buf.document_highlight,
-	  })
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        if client and client.server_capabilities.documentHighlightProvider then
+          local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = true })
+          vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+            buffer = event.buf,
+            group = highlight_augroup,
+            callback = vim.lsp.buf.document_highlight,
+          })
 
-	  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-	    buffer = event.buf,
-	    group = highlight_augroup,
-	    callback = vim.lsp.buf.clear_references,
-	  })
-	end
+          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+            buffer = event.buf,
+            group = highlight_augroup,
+            callback = vim.lsp.buf.clear_references,
+          })
+        end
 
-	if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-	  map('<leader>h', function()
-	    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-	  end, '[T]oggle Inlay [H]ints')
-	end
+        if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+          map('<leader>h', function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          end, '[T]oggle Inlay [H]ints')
+        end
       end,
     })
 
+    -- Updated LspDetach handler
     vim.api.nvim_create_autocmd('LspDetach', {
       group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
       callback = function(event)
-	vim.lsp.buf.clear_references()
-	vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event.buf }
+        -- Check if the highlight group exists before clearing it
+        local success, _ = pcall(vim.api.nvim_clear_autocmds, {
+          group = 'kickstart-lsp-highlight',
+          buffer = event.buf,
+        })
+
+        -- Clear references safely
+        if success then
+          vim.lsp.buf.clear_references()
+        end
       end,
     })
 
@@ -82,37 +90,37 @@ return {
 
     local servers = {
       yamlls = {
-	settings = {
-	  yaml = {
-	    schemas = {
-	      ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
-	      ["https://json.schemastore.org/github-action.json"] = "**/action.yaml",
-	    }
-	  }
-	}
+        settings = {
+          yaml = {
+            schemas = {
+              ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+              ["https://json.schemastore.org/github-action.json"] = "**/action.yaml",
+            },
+          },
+        },
       },
       ltex = {
-	settings = {
-	  ltex = {
-	    language = 'en-US',
-	    additionalRules = {
-	      motherTongue = 'pt-BR',
-	    },
-	    enablePickyRules = true,
-	    completionEnabled = true,
-	    statusBarItem = true,
-	    clearDiagnosticsWhenClosingFile = false,
-	  },
-	},
+        settings = {
+          ltex = {
+            language = 'en-US',
+            additionalRules = {
+              motherTongue = 'pt-BR',
+            },
+            enablePickyRules = true,
+            completionEnabled = true,
+            statusBarItem = true,
+            clearDiagnosticsWhenClosingFile = false,
+          },
+        },
       },
       lua_ls = {
-	settings = {
-	  Lua = {
-	    completion = {
-	      callSnippet = 'Replace',
-	    },
-	  },
-	},
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = 'Replace',
+            },
+          },
+        },
       },
     }
 
@@ -127,18 +135,15 @@ return {
 
     local lspconfig = require 'lspconfig'
 
-
     local handlers = {
       function(server_name) -- default handler (optional)
-	local server = servers[server_name] or {}
-	server.on_attach = function(client, bufnr)
-	  vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.setqflist()<CR>', { noremap = true, silent = true })
-	  local worskapce_client = require("workspace-diagnostics")
-	  worskapce_client.populate_workspace_diagnostics(client, bufnr)
-	end
+        local server = servers[server_name] or {}
+        server.on_attach = function(client, bufnr)
+          vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.setqflist()<CR>', { noremap = true, silent = true })
+        end
 
-	server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-	lspconfig[server_name].setup(server)
+        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        lspconfig[server_name].setup(server)
       end,
     }
 

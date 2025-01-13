@@ -45,6 +45,16 @@ return {
         map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
         local client = vim.lsp.get_client_by_id(event.data.client_id)
+        if not client then return nil end
+
+        if client.supports_method('textDocument/formatting') then
+          vim.api.nvim_create_autocmd('BufWritePre',{
+            buffer=event.buf,
+            callback= function()
+              vim.lsp.buf.format({bufnr=event.buf, id = client.id})
+            end
+          })
+        end
         if client and client.server_capabilities.documentHighlightProvider then
           local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = true })
           vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {

@@ -7,9 +7,9 @@ return {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     'artemave/workspace-diagnostics.nvim',
 
-    { 'j-hui/fidget.nvim', opts = {} },
+    { 'j-hui/fidget.nvim',       opts = {} },
 
-    { 'folke/neodev.nvim', opts = {} },
+    { 'folke/neodev.nvim',       opts = {} },
   },
   config = function()
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -20,11 +20,6 @@ return {
         end
 
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-        map('gdv', function()
-          require('telescope.builtin').lsp_definitions {
-            jump_type = 'vsplit', -- Open in vertical split
-          }
-        end, '[G]oto [D]efinition in vertical split')
 
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
@@ -47,11 +42,11 @@ return {
         local client = vim.lsp.get_client_by_id(event.data.client_id)
         if not client then return nil end
 
-        if client.supports_method('textDocument/formatting') then
-          vim.api.nvim_create_autocmd('BufWritePre',{
-            buffer=event.buf,
-            callback= function()
-              vim.lsp.buf.format({bufnr=event.buf, id = client.id})
+        if client:supports_method('textDocument/formatting') then
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            buffer = event.buf,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = event.buf, id = client.id })
             end
           })
         end
@@ -98,42 +93,6 @@ return {
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-    local servers = {
-      yamlls = {
-        settings = {
-          yaml = {
-            schemas = {
-              ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
-              ["https://json.schemastore.org/github-action.json"] = "**/action.yaml",
-            },
-          },
-        },
-      },
-      ltex = {
-        settings = {
-          ltex = {
-            language = 'en-US',
-            additionalRules = {
-              motherTongue = 'pt-BR',
-            },
-            enablePickyRules = true,
-            completionEnabled = true,
-            statusBarItem = true,
-            clearDiagnosticsWhenClosingFile = false,
-          },
-        },
-      },
-      lua_ls = {
-        settings = {
-          Lua = {
-            completion = {
-              callSnippet = 'Replace',
-            },
-          },
-        },
-      },
-    }
-
     require('mason').setup()
 
     local ensure_installed = vim.tbl_keys(servers or {})
@@ -149,7 +108,9 @@ return {
       function(server_name) -- default handler (optional)
         local server = servers[server_name] or {}
         server.on_attach = function(client, bufnr)
-	  vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float(nil, { scope = "cursor", focusable = false, border = "rounded" })<CR>', { noremap = true, silent = true })
+          vim.api.nvim_set_keymap('n', '<leader>e',
+            '<cmd>lua vim.diagnostic.open_float(nil, { scope = "cursor", focusable = false, border = "rounded" })<CR>',
+            { noremap = true, silent = true })
         end
 
         server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})

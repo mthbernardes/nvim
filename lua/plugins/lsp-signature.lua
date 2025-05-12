@@ -2,18 +2,28 @@ return {
   "ray-x/lsp_signature.nvim",
   event = "VeryLazy",
   opts = {
-    bind = true, -- This is mandatory for LSP signature help
-    hint_enable = true, -- Enable virtual hint
-    floating_window = true, -- Use a floating window for signature help
-    floating_window_above_cur_line = true, -- Try to place the floating window above the current line
-    hint_prefix = "🔍 ", -- Prefix for parameter hints
-    max_width = 80, -- Max width for the floating window
-    max_height = 12, -- Max height for the floating window
+    bind = true,
+    hint_enable = true,
+    floating_window = true,
+    floating_window_above_cur_line = true,
+    hint_prefix = "🔍 ",
+    max_width = 80,
+    max_height = 12,
     handler_opts = {
-      border = "rounded", -- Border style: "none", "single", "double", "rounded", "shadow", "solid"
+      border = "rounded",
     },
   },
   config = function(_, opts)
-    require("lsp_signature").setup(opts)
+    local signature = require("lsp_signature")
+    opts.on_attach = function(client, bufnr)
+      -- Only attach if the client supports signature help
+      if client.server_capabilities.signatureHelpProvider then
+        local encoding = client.offset_encoding or "utf-16"
+        signature.on_attach(opts, bufnr)
+      end
+    end
+    signature.setup(opts)
+    -- Do not override the global handler - this causes conflicts
+    -- Instead let the on_attach handle it per-buffer
   end,
 }
